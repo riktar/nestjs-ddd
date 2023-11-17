@@ -1,15 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BooksUsecases } from './books.usecases';
+import { BooksUseCases } from './books.usecases';
+import { Book } from '../entities/books.entity';
+import { Repository } from 'typeorm';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
-describe('BooksService', () => {
-  let useCases: BooksUsecases;
+describe('BooksUseCases', () => {
+  let useCases: BooksUseCases;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [BooksUsecases],
+      providers: [
+        BooksUseCases,
+        { provide: getRepositoryToken(Book), useValue: Repository },
+      ],
     }).compile();
 
-    useCases = module.get<BooksUsecases>(BooksUsecases);
+    useCases = module.get<BooksUseCases>(BooksUseCases);
   });
 
   it('should be defined', () => {

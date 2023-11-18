@@ -4,9 +4,12 @@ import { BooksUseCases } from './core/usecases/books.usecases';
 import { Book } from './core/entities/books.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+const BookRepository = TypeOrmModule.forFeature([Book]);
+
 @Module({
-  imports: [TypeOrmModule.forFeature([Book])],
+  imports: [BookRepository],
   controllers: [BooksRoutes],
   providers: [BooksUseCases],
+  exports: [BooksUseCases, BookRepository],
 })
 export class BooksModule {}

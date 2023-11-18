@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppUseCases } from './app.usecases';
 import { BooksModule } from '../../infrastructure/modules/books/books.module';
-import { DBTest } from '../../infrastructure/config/db.config';
+import { DBForTest } from '../../infrastructure/config/db.config';
 
 describe('AppUseCases', () => {
   let useCases: AppUseCases;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [DBTest, BooksModule],
+      imports: [DBForTest, BooksModule],
       providers: [AppUseCases],
     }).compile();
 

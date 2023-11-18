@@ -11,7 +11,7 @@ export const DB = TypeOrmModule.forRoot({
   synchronize: true, // only in TEST or DEVELOPMENT
 });
 
-export const DBTest = TypeOrmModule.forRoot({
+export const DBForTest = TypeOrmModule.forRoot({
   type: 'postgres',
   host: 'localhost',
   port: 5455,

@@ -5,9 +5,8 @@ import { AppUseCases } from '../../core/usecases/app.usecases';
 @Controller('')
 export class AppRoutes {
   constructor(private readonly appUseCases: AppUseCases) {}
-
   @Get()
-  @ApiTags('default')
+  @ApiTags('Application')
   @ApiOkResponse({ type: String, description: 'Hello World' })
   hello() {
     return this.appUseCases.helloWorld();

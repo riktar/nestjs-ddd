@@ -1,21 +1,24 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import { Author } from '../../../authors/core/entities/authors.entity';
 
 @Entity('books')
 export class Book {
   @PrimaryGeneratedColumn('uuid')
-  @ApiProperty({})
-  @IsUUID()
   id: string;
 
   @Column()
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
   title: string;
 
   @Column({ nullable: true })
-  @ApiProperty({ required: false })
   description: string;
+
+  @ManyToMany(() => Author, (author) => author.books)
+  @JoinTable()
+  authors: Author[];
 }

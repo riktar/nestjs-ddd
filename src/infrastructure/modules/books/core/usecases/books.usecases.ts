@@ -4,6 +4,7 @@ import { UpdateBookDto } from '../../infrastructure/dto/update-book.dto';
 import { Book } from '../entities/books.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Author } from '../../../authors/core/entities/authors.entity';
 
 @Injectable()
 export class BooksUseCases {
@@ -38,5 +39,47 @@ export class BooksUseCases {
       throw new Error('Book not deleted');
     }
     return Promise.resolve(true);
+  }
+
+  async getAuthors(id: string) {
+    const book = await this.bookRepository.findOne({
+      where: { id },
+      relations: { authors: true },
+    });
+    return book.authors;
+  }
+
+  async overrideAuthors(id: string, authors: string[]) {
+    const book = await this.bookRepository.findOneBy({ id });
+    book.authors = authors.map((authorId) => {
+      const authorObj = new Author();
+      authorObj.id = authorId;
+      return authorObj;
+    });
+    console.log(book);
+    const saved = await this.bookRepository.save(book);
+    console.log(saved);
+  }
+
+  async editAuthors(id: string, authors: string[], action: string) {
+    const book = await this.bookRepository.findOne({
+      relations: { authors: true },
+      where: { id },
+    });
+    if (action === 'add') {
+      book.authors = [
+        ...book.authors,
+        ...authors.map((authorId) => {
+          const authorObj = new Author();
+          authorObj.id = authorId;
+          return authorObj;
+        }),
+      ];
+    } else {
+      book.authors = book.authors.filter(
+        (author) => !authors.includes(author.id),
+      );
+    }
+    await this.bookRepository.save(book);
   }
 }

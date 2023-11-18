@@ -1,4 +1,4 @@
 import { OmitType } from '@nestjs/swagger';
-import { Book } from '../../core/entities/books.entity';
+import { BookDto } from './book.dto';
 
-export class CreateBookDto extends OmitType(Book, ['id'] as const) {}
+export class CreateBookDto extends OmitType(BookDto, ['id'] as const) {}
